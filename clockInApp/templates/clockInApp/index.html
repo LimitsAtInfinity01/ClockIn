@@ -1,9 +1,30 @@
 {% extends "clockInApp/layout.html" %}
-
+{% load static %} 
 {% block title %}
 Home Page
 {% endblock %}
 
 {% block content %}
-
+    <div class="table-div">
+        <table>
+            <tr>
+                <th>Name</th>
+                <th>Time in</th>
+                <th>Time out</th>
+                <th>Date</th>
+            </tr>
+            {% for time in times%}
+            <tr>
+                <td>{{ time.employee.name }} {{ time.employee.lastName }}</td>
+                <td>{{ time.timeIn }}</td>
+                {% if time.timeOut == None %}
+                    <td></td>
+                {% else %}
+                    <td>{{ time.timeOut }} </td>
+                {% endif %}
+                <td>{{ time.date }}</td>
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
 {% endblock %}

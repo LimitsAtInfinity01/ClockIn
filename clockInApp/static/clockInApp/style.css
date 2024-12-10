@@ -1,0 +1,18 @@
+table{
+    border: 1px solid black;
+    width: 75%;
+}
+
+td, th {
+    border: 1px solid black;
+}
+
+th {
+    background-color: teal;
+}
+
+.table-div {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}

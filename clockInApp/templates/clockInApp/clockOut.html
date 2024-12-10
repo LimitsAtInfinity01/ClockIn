@@ -1,0 +1,13 @@
+{% extends 'clockInApp/layout.html' %}
+
+{% block title %}
+    Clock Out
+{% endblock %}
+
+{% block content %}
+    <form action="" method="POST">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <input type="submit" value="Clock out">
+    </form>
+{% endblock %}
