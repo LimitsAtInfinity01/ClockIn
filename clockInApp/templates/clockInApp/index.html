@@ -5,24 +5,27 @@ Home Page
 {% endblock %}
 
 {% block content %}
-    <div class="table-div">
-        <table>
+    <div class="main-table-div">
+        <table class="table-main">
             <tr>
-                <th>Name</th>
-                <th>Time in</th>
-                <th>Time out</th>
-                <th>Date</th>
+                <th class="th-main">Name</th>
+                <th class="th-main">Last name</th>
+                <th class="th-main">Time in</th>
+                <th class="th-main">Time out</th>
+                <th class="th-main">Worked time</th>
             </tr>
-            {% for time in times%}
+            {% for time in times %}
             <tr>
-                <td>{{ time.employee.name }} {{ time.employee.lastName }}</td>
-                <td>{{ time.timeIn }}</td>
+                <td class="td-main">{{ time.employee.name }}</td>
+                <td class="td-main">{{ time.employee.lastName }}</td>
+                <td class="td-main">{{ time.timeIn }}</td>
                 {% if time.timeOut == None %}
-                    <td></td>
+                    <td class="td-main"></td>
                 {% else %}
-                    <td>{{ time.timeOut }} </td>
+                    <td class="td-main">{{ time.timeOut }} </td>
                 {% endif %}
-                <td>{{ time.date }}</td>
+                {% load custom_filters %}
+                <td class="td-main">{{ time.worked_time | format_timedelta }}</td>
             </tr>
             {% endfor %}
         </table>

@@ -1,16 +1,18 @@
 {% extends 'clockInApp/layout.html' %}
 
-
 {% block title %}
     Clock In/Out
 {% endblock %}
 
 {% block content %}
-    <div>
-        <form action="" method="POST">
+    <div class="w3-card-4">
+        <div class="w3-container w3-teal">
+            <h2>Clock in</h2>
+        </div>
+        <form action="" method="POST" class="w3-container">
             {% csrf_token %}
             {{ form.as_p }}
-            <input type="submit" value="Submit">
+            <input type="submit" value="Submit" class="w3-btn w3-blue">
         </form>
     </div>
 {% endblock %}

@@ -5,11 +5,16 @@
 {% endblock %}
 
 {% block content %}
-    <div>
-        <form action="" method="POST">
+    <div class="w3-card-4">
+        <div class="w3-container w3-teal">
+            <h2>Register</h2>
+        </div>
+        <form action="" method="POST" class="w3-container">
             {% csrf_token %}
             {{ form.as_p }}
-            <input type="submit" value="Register">
+            <input class="w3-btn w3-blue" type="submit" value="Register">
         </form>
     </div>
+
+
 {% endblock %}

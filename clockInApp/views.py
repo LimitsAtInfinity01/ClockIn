@@ -1,9 +1,11 @@
 from django.shortcuts import render, redirect
 from django.http import HttpResponse, HttpRequest
+
 from clockInApp.forms import RegisterEmployeeForm, ClockInForm, ClockOutForm, ReportForm
 from clockInApp.models import Employee, Admins, Times
 
 import datetime
+from datetime import timedelta
 
 from reportlab.pdfgen import canvas
 from reportlab.pdfbase.ttfonts import TTFont 
@@ -61,8 +63,7 @@ def clockIn(request):
                 if not employee.signedIn:
                     now = datetime.datetime.now()
                     clockIn = Times(employee=employee,
-                                    timeIn=now.time(),
-                                    date=now.date())
+                                    timeIn=now)
                     
                     employee.signedIn = True
                     print("You are clocked in")
@@ -99,7 +100,7 @@ def clockOut(request):
                 return redirect('index')
 
             # Fetch the most recent Times record for the employee where timeOut is not set
-            time = Times.objects.filter(employee=employee, timeOut__isnull=True).order_by('-date').first()
+            time = Times.objects.filter(employee=employee, timeOut__isnull=True).order_by('-timeIn').first()
 
             if not time:
                 print("No active clock-in record found. You need to clock in first.")
@@ -107,7 +108,7 @@ def clockOut(request):
 
             if employee.signedIn:
                 # Update timeOut for the most recent record
-                time.timeOut = datetime.datetime.now().time()  # Save only the time part
+                time.timeOut = datetime.datetime.now()
                 time.save()
                 employee.signedIn = False
                 employee.save()
@@ -125,37 +126,43 @@ def clockOut(request):
     })
 
 def printPDF(request):
-    doc = SimpleDocTemplate("example_platypus.pdf")
-    styles = getSampleStyleSheet()
-    content = []
-    content.append(Paragraph("This is a paragraph.", styles['Normal']))
-    content.append(Spacer(1, 12))
+    pass
+#     doc = SimpleDocTemplate("example_platypus.pdf")
+#     styles = getSampleStyleSheet()
+#     content = []
+#     content.append(Paragraph("This is a paragraph.", styles['Normal']))
+#     content.append(Spacer(1, 12))
 
-    times = Times.objects.all()
-    print(times)
-    data = [["Name", "Last name", "Clock in", "Clock out", "Date"]]
-    for time in times:
-        clock_In = time.timeIn.strftime('%H:%M')
-        clock_out = time.timeOut.strftime('%H:%M')
-        data.append([time.employee.name, time.employee.lastName, clock_In, clock_out, time.date])
+#     times = Times.objects.all()
+#     print(times)
+#     data = [["Name", "Last name", "Clock in", "Clock out", "Date"]]
+#     for time in times:
+#         if time.timeOut:
+#             clock_In = time.timeIn.strftime('%H:%M')
+#             clock_out = time.timeOut.strftime('%H:%M')
+#             data.append([time.employee.name, time.employee.lastName, clock_In, clock_out, time.date])
+#         else:
+#             clock_In = time.timeIn.strftime('%H:%M')
+#             data.append([time.employee.name, time.employee.lastName, clock_In, '', time.date])
 
-    table = Table(data)
-    content.append(table)
+#     table = Table(data)
+#     content.append(table)
 
-    doc.build(content)
-    return redirect('index')
+#     doc.build(content)
+#     return redirect('index')
 
 def reports(request):
+    times = None
     if request.method ==  'POST':
         form = ReportForm(request.POST)
         if form.is_valid():
             username = form.cleaned_data['username']
             password = form.cleaned_data['password']
-            employee = Employee.objects.get(username)
+            employee = Employee.objects.get(username=username)
             if employee.check_password(password):
-                times = Times.objects.all(employee)
-                print(times)
-                return redirect('index')
+                times = Times.objects.filter(employee=employee.id).all()
+                for time in times: 
+                    print(f'{time.timeIn}, {time.timeOut}')
             else:
                 #TODO Add flash message for wrong password
                 print('Wrong Password')
@@ -163,5 +170,6 @@ def reports(request):
         form = ReportForm()
     
     return render(request, 'clockInApp/reports.html', {
-        'form': form
+        'form': form,
+        'times': times
     })

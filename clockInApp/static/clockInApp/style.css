@@ -1,18 +1,53 @@
-table{
+.table-main {
     border: 1px solid black;
     width: 75%;
 }
 
-td, th {
+.th-main, .td-main {
     border: 1px solid black;
 }
 
-th {
+.th-main {
     background-color: teal;
 }
 
-.table-div {
+.main-table-div {
     display: flex;
     justify-content: center;
     align-items: center;
 }
+
+.report-table-div {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.table-report {
+    border: 1px solid black;
+    width: 75%;
+}
+
+.th-report, .td-report {
+    border: 1px solid black;
+}
+
+.th-report {
+    background-color: teal;
+}
+
+.w3-card-4 {
+    width: 50%;
+    justify-content: center;
+    align-items: center;
+    margin: auto;
+    margin-top: 75px;
+  }
+
+  .w3-btn w3-blue {
+    margin-bottom: 10px;
+  }
+
+  .w3-container{
+    padding-bottom: 10px;
+  }
