@@ -18,13 +18,12 @@
     </div>
 
     {% else %}
-    <div class="report-table-div">
-        <table class="table-report">
+    <div class="report-table-div" >
+        <table class="table-report" id="reportTable">
             <th class="th-report">Name</th>
             <th class="th-report">Time in</th>
             <th class="th-report">Time out</th>
-            <th class="th-report">Worked time</th>
-
+            <th class="th-report" data-sort="worked-time">Worked time</th>
             <tr>
             {% for time in times %}
             <td class="td-report">{{ time.employee.name }}</td>
@@ -35,12 +34,16 @@
                 <td class="td-report">{{ time.timeOut }}</td>
             {% endif %}
             {% load custom_filters %}
-            <td class="td-report">{{ time.worked_time | format_timedelta }}</td>
+            <td class="td-report">{{ time.worked_time }}</td>
+            <!-- <td class="td-report">{{ time.worked_time | format_timedelta }}</td> -->
             </tr>
             {% endfor %}
         {% endif %}
         </table>  
     </div>
+    {% load static %}
+    <script src="{% static 'clockInApp/scripts/report.js' %}"></script>
+
 
 {% endblock %}
 
