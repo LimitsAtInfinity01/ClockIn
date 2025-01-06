@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    {% block head %}{% endblock %}
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     {% load static %}
@@ -10,16 +11,18 @@
     <link rel="stylesheet" type="text/css" href="{% static 'clockInApp/style.css' %}">
     <title>{% block title %}{% endblock %}</title>  
 </head>
-<body style="background-color: rgb(46, 45, 45);">
+<body>
     <div class="w3-bar  w3-teal w3-large" style="margin: 5px; margin-right: 5px;">
         <a href="{% url 'index' %}" class="w3-bar-item w3-button  w3-indigo w3-large">Home</a>
         <a href="{% url 'register' %}" class="w3-bar-item w3-button  w3-large">Register</a>
         <a href="{% url 'clockIn' %}" class="w3-bar-item w3-button  w3-large">Clock in</a>
         <a href="{% url 'clockOut' %}" class="w3-bar-item w3-button  w3-large">Clock out</a>
-        <a href="{% url 'reports' %}" class="w3-bar-item w3-button  w3-large">Reports</a>
-        <a href="{% url 'printPDF' %}" class="w3-bar-item w3-button  w3-large">Print</a>
+        <a href="{% url 'myWorkHistory' %}" class="w3-bar-item w3-button  w3-large">My Work History</a>
+
+        <a href="{% url 'example-page' %}" class="w3-bar-item w3-button  w3-large">Example</a>
         <a href="#" class="w3-bar-item w3-button w3-brown w3-right  w3-large">Admin</a>
     </div> 
     {% block content %}{% endblock %}
 </body>
 </html>
+

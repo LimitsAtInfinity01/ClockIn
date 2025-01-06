@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from django.http import HttpResponse, HttpRequest
+from django.http import HttpResponse, HttpRequest, JsonResponse
 
 from clockInApp.forms import RegisterEmployeeForm, ClockInForm, ClockOutForm, ReportForm
 from clockInApp.models import Employee, Admins, Times
@@ -13,6 +13,10 @@ from reportlab.platypus import SimpleDocTemplate, Paragraph, Table, Spacer
 from reportlab.lib.styles import getSampleStyleSheet
 from reportlab.pdfbase import pdfmetrics 
 from reportlab.lib import colors 
+
+import json
+from django.core.serializers.json import DjangoJSONEncoder
+
 
 # Create your views here.
 def index(request):
@@ -151,7 +155,7 @@ def printPDF(request):
 #     doc.build(content)
 #     return redirect('index')
 
-def reports(request):
+def myWorkHistory(request):
     times = None
     if request.method ==  'POST':
         form = ReportForm(request.POST)
@@ -161,15 +165,28 @@ def reports(request):
             employee = Employee.objects.get(username=username)
             if employee.check_password(password):
                 times = Times.objects.filter(employee=employee.id).all()
-                for time in times: 
-                    print(f'{time.timeIn}, {time.timeOut}')
+                print(times)
+                time_list = list(times.values())
+                times_json = json.dumps(time_list, cls=DjangoJSONEncoder)
+                print(times_json)
+                return JsonResponse(times_json, safe=False)
             else:
                 #TODO Add flash message for wrong password
                 print('Wrong Password')
+                return redirect('index')
     else:
         form = ReportForm()
-    
-    return render(request, 'clockInApp/reports.html', {
+    return render(request, 'clockInApp/myWorkHistory.html', {
         'form': form,
-        'times': times
     })
+
+def example_view(request):
+    data = {
+        'name': "Cassie",
+        'type': "ratoncita"
+    }
+    return JsonResponse(data)
+
+
+def example_page(request):
+    return render(request, 'clockInApp/example.html')

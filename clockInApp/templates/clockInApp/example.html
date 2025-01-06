@@ -1,0 +1,34 @@
+{% extends 'clockInApp/layout.html' %}
+{% load static %}
+    
+{% block title %}
+
+{% endblock %}
+
+{% block head %}
+    {{ block.super }}
+    <link rel="stylesheet" href="{% static 'clockInApp/history_style.css' %}">
+    <script src="{% static 'clockInApp/scripts/example.js' %}"></script>
+    <style>
+        /* Override styles from the layout */
+        body {
+            background-color: white; /* Override background */
+            color: black; /* Override text color */
+        }
+
+        h1 {
+            color: blue; /* Override heading color */
+        }
+    </style>
+{% endblock %}
+
+{% block content %}
+<!-- Parent layout -->
+    <body style="background-color: white;">
+
+    <h1 style="color: white;">AJAX JSON Example</h1>
+    <button id="fetchData">Fetch Data</button>
+    <div id="response"></div>
+
+    
+{% endblock %}

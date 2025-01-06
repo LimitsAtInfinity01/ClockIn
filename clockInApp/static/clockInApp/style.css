@@ -1,3 +1,7 @@
+body {
+    background-color: rgba(0, 0, 0, 0.769);
+}
+
 .table-main {
     border: 1px solid black;
     width: 75%;
@@ -54,3 +58,25 @@
     padding-bottom: 10px;
   }
 
+#nameHeading, #lastNameHeading, #workedTimeHeading:hover {
+    background-color: rgb(3, 84, 84);
+    cursor: pointer;
+}
+
+.triangle {
+    display: inline-block;
+    margin-left: 7px;
+    border-left: 7px solid transparent;
+    border-right: 7px solid transparent;
+    border-top: px solid black; /* Default triangle pointing down */
+}
+
+.sorted-asc .triangle {
+    border-top: none;
+    border-bottom: 7px solid black; /* Triangle pointing up */
+}
+
+.sorted-desc .triangle {
+    border-bottom: none;
+    border-top: 7px solid black; /* Triangle pointing down */
+}

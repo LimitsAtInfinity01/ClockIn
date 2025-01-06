@@ -2,31 +2,63 @@
 main()
 
 function main(){
-    // Sort by name
+   
+    let sorted = false;
+    let originalData = getTableData()
+
     headingNameCell = document.querySelector("#nameHeading");
+    headingNameCell.classList.add("sorted-asc");
     headingNameCell.addEventListener("click", function(){
-        let data = getTableData();
-        let sortedData = sortData(data, "#name");
-        removeBody()
-        createBody(sortedData)
+        if (sorted == false){
+            let data = getTableData();
+            let sortedData = sortData(data, "#name");
+            removeBody()
+            createBody(sortedData)
+            sorted = true
+            headingNameCell.classList.add("sorted-asc");
+            headingNameCell.classList.remove("sorted-desc");
+        } else{
+            removeBody()
+            createBody(originalData)
+            sorted = false
+            headingNameCell.classList.add("sorted-desc");
+            headingNameCell.classList.remove("sorted-asc");
+        }
     })
     
     headingLastNameCell = document.querySelector("#lastNameHeading");
     headingLastNameCell.addEventListener("click", function(){
-        let data = getTableData();
-        let sortedData = sortData(data, "#lastName");
-        removeBody()
-        createBody(sortedData)
+        if (sorted == false){
+            let data = getTableData();
+            let sortedData = sortData(data, "#lastName");
+            removeBody()
+            createBody(sortedData)
+            sorted = true
+        } else {
+            removeBody()
+            createBody(originalData)
+            sorted = false
+        }
     })
 
     headingWorkedTimeCell = document.querySelector('#workedTimeHeading')
     headingWorkedTimeCell.addEventListener('click', function(){
-        let data = getTableData();
-        sortedData = sortTimeData(data)
-        removeBody()
-        rebuildBodyByTime(sortedData)
+        if (sorted == false){
+            let data = getTableData();
+            sortedData = sortTimeData(data)
+            removeBody()
+            rebuildBodyByTime(sortedData)
+            sorted = true
+        } else {
+            removeBody()
+            createBody(originalData)
+            sorted = false
+        }
     })
+
+
 }
+
 
 
 function getTableData(){
@@ -122,7 +154,6 @@ function sortTimeData(data){
 function rebuildBodyByTime(data){
     let body = document.getElementsByTagName('tbody')[0]
     for (let i = 0; i < data.length; i++){
-        console.log(data[i]['originalData'])
         body.appendChild(data[i]['originalData'])
     }
 }

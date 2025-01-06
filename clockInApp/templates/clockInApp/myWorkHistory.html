@@ -1,0 +1,40 @@
+{% extends 'clockInApp/layout.html' %}
+{% load static %}
+    
+{% block title %}
+
+{% endblock %}
+
+{% block head %}
+    {{ block.super }}
+    <link rel="stylesheet" href="{% static 'clockInApp/history_style.css' %}">
+    <script src="{% static 'clockInApp/scripts/history.js' %}"></script>
+{% endblock %}
+
+{% block content %}
+
+    <div class="history-form">
+        <div class="w3-card-4">
+            <div class="w3-container w3-teal">
+                <h2>Get Reports</h2>
+            </div>
+            <form action="" method="POST" class="w3-container form-history">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <input type="submit" value="Submit" class="w3-btn w3-blue">
+            </form>
+        </div>
+    </div>
+
+    <div class="history-content">
+        <h1 class="title-content">Content</h1>
+        {% for time in times %}
+            <p style="color: white;">{{ time.timeIn }}</p>
+        {% endfor %}
+    </div>
+    
+    
+{% endblock %}
+
+
+

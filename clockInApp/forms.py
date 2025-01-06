@@ -28,7 +28,7 @@ class ClockOutForm(forms.Form):
     password = forms.CharField(widget=forms.PasswordInput(attrs={'class':'w3-input w3-border'}))
 
 class ReportForm(forms.Form):
-    username = forms.CharField(max_length=32, widget=forms.TextInput(attrs={'class':'w3-input w3-border'}))
-    password = forms.CharField(widget=forms.PasswordInput(attrs={'class':'w3-input w3-border'}))
+    username = forms.CharField(max_length=32, widget=forms.TextInput(attrs={'class':'w3-input w3-border', 'autocomplete':'username'}))
+    password = forms.CharField(widget=forms.PasswordInput(attrs={'class':'w3-input w3-border', 'autocomplete':'current-password'}))
 
 
