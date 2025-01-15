@@ -107,7 +107,7 @@ AUTH_PASSWORD_VALIDATORS = [
 LANGUAGE_CODE = "en-us"
 
 #TODO set it to get the time of the current zone
-TIME_ZONE = "MST"
+TIME_ZONE = "America/Denver"
 
 USE_I18N = True
 

@@ -1,11 +1,14 @@
+import django
 from django.shortcuts import render, redirect
 from django.http import HttpResponse, HttpRequest, JsonResponse
 
 from clockInApp.forms import RegisterEmployeeForm, ClockInForm, ClockOutForm, ReportForm
 from clockInApp.models import Employee, Admins, Times
 
+from django.db.models import DateField
+from django.db.models.functions import Cast
+
 import datetime
-from datetime import timedelta
 
 from reportlab.pdfgen import canvas
 from reportlab.pdfbase.ttfonts import TTFont 
@@ -21,7 +24,7 @@ from django.core.serializers.json import DjangoJSONEncoder
 # Create your views here.
 def index(request):
     times = Times.objects.all()
-
+    print(times)
     return render(request, "clockInApp/index.html", {
         'times': times
         })
@@ -39,8 +42,13 @@ def register(request):
                                 lastName=lastName,
                                 username=username)
             employee.set_password(password)
-            employee.save()
-            return redirect('index')
+            #TODO check if employee already exists before saving
+            try: 
+                employee.save()
+                return redirect('index')
+            except django.db.utils.IntegrityError:
+                # TODO display an error message when employee exits
+                return redirect('register')
     else:
         form = RegisterEmployeeForm()
     return render(request, "clockInApp/register.html",{
@@ -161,18 +169,23 @@ def myWorkHistory(request):
         form = ReportForm(request.POST)
         if form.is_valid():
             username = form.cleaned_data['username']
+            request.session['username'] = username
             password = form.cleaned_data['password']
             employee = Employee.objects.get(username=username)
             if employee.check_password(password):
-                times = Times.objects.filter(employee=employee.id).all()
-                print(times)
-                time_list = list(times.values())
-                times_json = json.dumps(time_list, cls=DjangoJSONEncoder)
-                print(times_json)
-                return JsonResponse(times_json, safe=False)
+                times = Times.objects.filter(employee=employee.id).select_related('employee').all()
+
+                time_list_with_name = []
+                for time in times:
+                    time_list_with_name.append({
+                        'first_name': time.employee.name,
+                        'last_name': time.employee.lastName,
+                        "timeIn": time.timeIn,
+                        "timeOut": time.timeOut,
+                        'workedTime': time.worked_time
+                    })
+                return JsonResponse(time_list_with_name, safe=False)
             else:
-                #TODO Add flash message for wrong password
-                print('Wrong Password')
                 return redirect('index')
     else:
         form = ReportForm()
@@ -180,12 +193,34 @@ def myWorkHistory(request):
         'form': form,
     })
 
-def example_view(request):
-    data = {
-        'name': "Cassie",
-        'type': "ratoncita"
-    }
-    return JsonResponse(data)
+# http://127.0.0.1:8000/
+def searchBox_API(request):
+    # mm-dd-yyyy
+    #TODO Implement a search that covers a range of dates
+    search_date = request.GET.get('q')
+    month, day, year = search_date.split('-')
+    username = request.session.get('username')
+    employee = Employee.objects.get(username=username)
+
+    # Not returning all the data. There is a discrepancy in the database
+    times = Times.objects.annotate(date_only=Cast('timeIn', DateField())).filter(employee=employee, date_only=datetime.date(int(year), int(month), int(day)))
+
+    data = []
+    for time in times:
+        print(time.employee.name)
+        print(time.employee.lastName)
+        print(time.timeIn)
+        print(time.timeOut)
+        print(time.worked_time)
+        data.append({
+            'first_name': time.employee.name,
+            'last_name': time.employee.lastName,
+            "timeIn": time.timeIn,
+            "timeOut": time.timeOut,
+            'workedTime': time.worked_time
+        })
+       
+    return JsonResponse(data, safe=False)
 
 
 def example_page(request):

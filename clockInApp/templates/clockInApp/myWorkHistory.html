@@ -1,18 +1,18 @@
 {% extends 'clockInApp/layout.html' %}
 {% load static %}
-    
-{% block title %}
 
+{% block title %}
+    Work History Report
 {% endblock %}
 
 {% block head %}
     {{ block.super }}
     <link rel="stylesheet" href="{% static 'clockInApp/history_style.css' %}">
-    <script src="{% static 'clockInApp/scripts/history.js' %}"></script>
+    <script type="module" src="{% static 'clockInApp/scripts/history.js' %}"></script>
 {% endblock %}
 
 {% block content %}
-
+    <!-- Form Section -->
     <div class="history-form">
         <div class="w3-card-4">
             <div class="w3-container w3-teal">
@@ -26,15 +26,27 @@
         </div>
     </div>
 
+    <!-- Dynamic Content Section -->
     <div class="history-content">
-        <h1 class="title-content">Content</h1>
-        {% for time in times %}
-            <p style="color: white;">{{ time.timeIn }}</p>
-        {% endfor %}
+        <h1 class="title-content">Recent Time Worked</h1>
     </div>
-    
-    
+
+    <!-- Search Section -->
+    <div class="search-div" style="display: none;">
+        <input type="search" id="search-history" placeholder="mm-dd-yyyy" class="search-box">
+        <button class="search-btn">Search</button>
+    </div>
+
+    <!-- Search Results -->
+    <div class="search-results" style="display: none">
+        <h1 class="search-title">Search Results</h1>
+    </div>
+
+    <!-- Additional Scripts -->
+    <script type="module" src="{% static 'clockInApp/scripts/sortTableClass.js' %}"></script>
+    <script type="module" src="{% static 'clockInApp/scripts/timeFormating.js' %}"></script>
 {% endblock %}
+
 
 
 

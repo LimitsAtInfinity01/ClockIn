@@ -8,30 +8,32 @@ Home Page
     <div class="main-table-div">
         <table class="table-main">
             <thead>
-                <th class="th-main" id="nameHeading">Name <span class="triangle"></span></th>
+                <th class="th-main" id="nameHeading">Name</th>
                 <th class="th-main" id="lastNameHeading">Last name</th>
                 <th class="th-main" id="timeInHeading">Time in</th>
                 <th class="th-main" id="timeOutHeading">Time out</th>
                 <th class="th-main" id="workedTimeHeading">Worked time</th>
             </thead>
             <tbody>
-            {% for time in times %}
-                <tr>
-                    <td class="td-main" id="name">{{ time.employee.name }}</td>
-                    <td class="td-main" id="lastName">{{ time.employee.lastName }}</td>
-                    <td class="td-main" id="timeIn">{{ time.timeIn }}</td>
-                    {% if time.timeOut == None %}
-                        <td class="td-main" id="timeOut"></td>
-                    {% else %}
-                        <td class="td-main" id="timeOut">{{ time.timeOut }} </td>
-                    {% endif %}
-                    {% load custom_filters %}
-                    <td class="td-main" id="workedTime">{{ time.worked_time }}</td>
-                </tr>
-            {% endfor %}
-        </tbody>
+                {% for time in times %}
+                    <tr>
+                        <td class="td-main" id="name">{{ time.employee.name }}</td>
+                        <td class="td-main" id="lastName">{{ time.employee.lastName }}</td>
+                        <td class="td-main" id="timeIn">{{ time.timeIn }}</td>
+                        {% if time.timeOut == None %}
+                            <td class="td-main" id="timeOut"></td>
+                        {% else %}
+                            <td class="td-main" id="timeOut">{{ time.timeOut }} </td>
+                        {% endif %}
+                        {% load custom_filters %}
+                        <td class="td-main" id="workedTime">{{ time.worked_time }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
         </table>
     </div>
     {% load static %}
-    <script src="{% static 'clockInApp/scripts/index.js' %}"></script>
+    <script type="module" src="{% static 'clockInApp/scripts/index.js' %}"></script>
+    <script type="module" src="{% static 'clockInApp/scripts/sortTableClass.js' %}"></script>
+
 {% endblock %}
